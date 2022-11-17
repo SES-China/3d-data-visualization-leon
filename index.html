@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>Babylon.js sample code</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <!-- Babylon.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
-        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
-        <script src="https://preview.babylonjs.com/ammo.js"></script>
-        <script src="https://preview.babylonjs.com/cannon.js"></script>
-        <script src="https://preview.babylonjs.com/Oimo.js"></script>
-        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
-        <script src="https://preview.babylonjs.com/babylon.js"></script>
-        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
-        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
-        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
-        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
-        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
-        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
-        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+    <title>Babylon.js sample code</title>
 
-        <style>
-            html, body {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+    <!-- Babylon.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+    <script src="https://preview.babylonjs.com/ammo.js"></script>
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="https://preview.babylonjs.com/Oimo.js"></script>
+    <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
 
-            #renderCanvas {
-                width: 100%;
-                height: 100%;
-                touch-action: none;
-            }
-        </style>
-    </head>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+
 <body>
     <canvas id="renderCanvas"></canvas>
     <script>
@@ -53,42 +56,42 @@
         var engine = null;
         var scene = null;
         var sceneToRender = null;
-        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
-        
+        var createDefaultEngine = function () { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true, disableWebGL2Support: false }); };
+
         let W = 180,
             H = 180,
             D = 300;
-        
+
         //converted from csv to json
         var inputData = [{ "year": 2017, "t1": 29, "t2": 29, "t3": 28, "t4": 27, "t5": 27, "t6": 26, "t7": 26, "t8": 26, "t9": 26, "t10": 27, "t11": 29, "t12": 29, "t13": 28, "t14": 28, "t15": 29, "t16": 31, "t17": 32, "t18": 33, "t19": 34, "t20": 35, "t21": 35, "t22": 35, "t23": 36, "t24": 37, "t25": 37, "t26": 35, "t27": 35, "t28": 34, "t29": 34, "t30": 33, "t31": 31 }, { "year": 2016, "t1": 28, "t2": 28, "t3": 27, "t4": 26, "t5": 26, "t6": 25, "t7": 25, "t8": 25, "t9": 25, "t10": 26, "t11": 27, "t12": 27, "t13": 28, "t14": 28, "t15": 29, "t16": 30, "t17": 31, "t18": 32, "t19": 33, "t20": 34, "t21": 34, "t22": 35, "t23": 36, "t24": 37, "t25": 36, "t26": 34, "t27": 34, "t28": 33, "t29": 33, "t30": 32, "t31": 31 }, { "year": 2015, "t1": 27, "t2": 27, "t3": 27, "t4": 26, "t5": 25, "t6": 25, "t7": 25, "t8": 25, "t9": 25, "t10": 25, "t11": 27, "t12": 27, "t13": 27, "t14": 27, "t15": 28, "t16": 29, "t17": 30, "t18": 31, "t19": 32, "t20": 33, "t21": 33, "t22": 34, "t23": 35, "t24": 36, "t25": 35, "t26": 34, "t27": 33, "t28": 32, "t29": 32, "t30": 31, "t31": 30 }, { "year": 2014, "t1": 27, "t2": 27, "t3": 27, "t4": 26, "t5": 25, "t6": 25, "t7": 25, "t8": 25, "t9": 25, "t10": 25, "t11": 26, "t12": 26, "t13": 27, "t14": 26, "t15": 27, "t16": 28, "t17": 29, "t18": 30, "t19": 31, "t20": 32, "t21": 32, "t22": 33, "t23": 35, "t24": 35, "t25": 34, "t26": 33, "t27": 32, "t28": 31, "t29": 31, "t30": 30, "t31": 29 }, { "year": 2013, "t1": 27, "t2": 27, "t3": 27, "t4": 26, "t5": 25, "t6": 25, "t7": 25, "t8": 25, "t9": 26, "t10": 25, "t11": 27, "t12": 27, "t13": 27, "t14": 27, "t15": 28, "t16": 29, "t17": 30, "t18": 31, "t19": 32, "t20": 33, "t21": 33, "t22": 34, "t23": 35, "t24": 36, "t25": 35, "t26": 34, "t27": 33, "t28": 32, "t29": 32, "t30": 31, "t31": 30 }, { "year": 2012, "t1": 28, "t2": 28, "t3": 27, "t4": 26, "t5": 26, "t6": 25, "t7": 25, "t8": 25, "t9": 25, "t10": 26, "t11": 27, "t12": 27, "t13": 28, "t14": 28, "t15": 29, "t16": 30, "t17": 31, "t18": 32, "t19": 33, "t20": 34, "t21": 34, "t22": 35, "t23": 36, "t24": 37, "t25": 36, "t26": 34, "t27": 34, "t28": 33, "t29": 33, "t30": 32, "t31": 31 }, { "year": 2011, "t1": 29, "t2": 29, "t3": 28, "t4": 27, "t5": 27, "t6": 26, "t7": 26, "t8": 26, "t9": 26, "t10": 27, "t11": 29, "t12": 29, "t13": 28, "t14": 28, "t15": 29, "t16": 31, "t17": 32, "t18": 33, "t19": 34, "t20": 35, "t21": 35, "t22": 35, "t23": 36, "t24": 37, "t25": 37, "t26": 35, "t27": 35, "t28": 34, "t29": 34, "t30": 33, "t31": 31 }, { "year": 2010, "t1": 30, "t2": 30, "t3": 29, "t4": 28, "t5": 28, "t6": 27, "t7": 27, "t8": 27, "t9": 27, "t10": 28, "t11": 30, "t12": 30, "t13": 29, "t14": 29, "t15": 30, "t16": 31, "t17": 32, "t18": 34, "t19": 35, "t20": 36, "t21": 36, "t22": 36, "t23": 37, "t24": 36, "t25": 36, "t26": 35, "t27": 36, "t28": 34, "t29": 33, "t30": 32, "t31": 30 }, { "year": 2009, "t1": 31, "t2": 31, "t3": 30, "t4": 29, "t5": 29, "t6": 28, "t7": 28, "t8": 28, "t9": 28, "t10": 29, "t11": 31, "t12": 31, "t13": 30, "t14": 30, "t15": 31, "t16": 32, "t17": 33, "t18": 34, "t19": 35, "t20": 36, "t21": 37, "t22": 37, "t23": 37, "t24": 36, "t25": 35, "t26": 35, "t27": 34, "t28": 33, "t29": 32, "t30": 31, "t31": 29 }, { "year": 2008, "t1": 32, "t2": 32, "t3": 31, "t4": 30, "t5": 30, "t6": 29, "t7": 29, "t8": 29, "t9": 29, "t10": 30, "t11": 32, "t12": 32, "t13": 31, "t14": 31, "t15": 32, "t16": 33, "t17": 34, "t18": 35, "t19": 36, "t20": 37, "t21": 37, "t22": 37, "t23": 37, "t24": 37, "t25": 35, "t26": 35, "t27": 34, "t28": 32, "t29": 31, "t30": 30, "t31": 29 }, { "year": 2007, "t1": 32, "t2": 32, "t3": 31, "t4": 30, "t5": 30, "t6": 29, "t7": 29, "t8": 29, "t9": 29, "t10": 30, "t11": 32, "t12": 32, "t13": 31, "t14": 31, "t15": 32, "t16": 33, "t17": 34, "t18": 35, "t19": 36, "t20": 37, "t21": 37, "t22": 37, "t23": 37, "t24": 37, "t25": 35, "t26": 35, "t27": 34, "t28": 32, "t29": 31, "t30": 30, "t31": 29 }, { "year": 2006, "t1": 30, "t2": 30, "t3": 29, "t4": 28, "t5": 28, "t6": 27, "t7": 27, "t8": 27, "t9": 27, "t10": 28, "t11": 30, "t12": 30, "t13": 29, "t14": 29, "t15": 30, "t16": 31, "t17": 32, "t18": 34, "t19": 35, "t20": 36, "t21": 36, "t22": 36, "t23": 37, "t24": 36, "t25": 36, "t26": 35, "t27": 36, "t28": 34, "t29": 33, "t30": 32, "t31": 30 }];
-        
+
         var DataSet = {}
-        
+
         DataSet['data'] = inputData;
         DataSet['labels'] = {
             x: [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006],
             y: ["", "25°", "26°", "27°", "28°", "29°", "30°", "31°", "32°", "33°", "34°", "35°", "36°", "37°", "38°", "39°", "40°"],
             z: ["", 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, "09", "08", "07", "06", "05", "04", "03", "02", "01"]
         }
-        
+
         var createScene = function () {
-        
+
             var scene = new BABYLON.Scene(engine);
             scene.clearColor = new BABYLON.Color4(0.9, 0.9, 0.9, 1);
-        
+
             var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
-        
+
             var camera = new BABYLON.ArcRotateCamera("Camera", 0.33, 1.33, 750, BABYLON.Vector3.Zero(), scene);
             camera.attachControl(canvas, true);
             camera.fov = 1;
-        
+
             //set points
             var points = [];
             for (var i = 0; i < DataSet['data'].length; i++) {
                 var x = Object.keys(DataSet['labels']['x']).filter(function (k) { return DataSet['labels']['x'][k] == DataSet['data'][i]["year"]; });
                 var xp = DataSet['labels']['x'].length - x[0];
                 var z = 1;
-        
+
                 for (var j in DataSet['data'][i]) {
                     if (j == "year") continue;
                     var y = DataSet['data'][i][j] - 24;
@@ -96,54 +99,65 @@
                     z++;
                 }
             }
-        
-        
+
+
             // //draw scatterPlot
             // var scatterPlot = new ScatterPlot(DataSet,{width:W,height:H,depth:D}, scene);
             // scatterPlot.setPosition(new BABYLON.Vector3(W/2,H/2,D/2));
-        
+
             // //draw graphic - ribbon
             // scatterPlot.draw(points, false);
-        
+
             // //reposition
             // scatterPlot.setPosition(new BABYLON.Vector3(0,0,0));
-        
-        
+
+
             // //draw scatterPlot2
             // var scatterPlot2 = new ScatterPlot(DataSet,{width:W,height:H,depth:D}, scene);
             // scatterPlot2.setPosition(new BABYLON.Vector3(W/2,H/2,D/2));
             // scatterPlot2.setColor(BABYLON.Color3.Black());
             // scatterPlot2.gridMaterial = true;
             // scatterPlot2.convertToFlatShadedMesh = true;
-        
+
             // //draw graphic - ribbon
             // scatterPlot2.draw(points, false);
-        
+
             // //reposition
             // scatterPlot2.setPosition(new BABYLON.Vector3(0,0,D+50));
-        
-        
+
+
             //draw scatterPlot3
             var scatterPlot3 = new ScatterPlot(DataSet, { width: W, height: H, depth: D }, scene);
             scatterPlot3.setPosition(new BABYLON.Vector3(W / 2, H / 2, D / 2));
             scatterPlot3.setColor(BABYLON.Color3.White());
             scatterPlot3.setScaling(new BABYLON.Vector3(2, 2, 2));
-        
+
             //draw graphic - 3d objects
             scatterPlot3.draw(points, true);
-        
+
             //reposition
             //catterPlot3.setPosition(new BABYLON.Vector3(-W/2,H/2,-2*D+50));
             scatterPlot3.setPosition(new BABYLON.Vector3(-W / 2, H / 2, -50));
-        
+
             // Default Environment
+            const env = scene.createDefaultEnvironment();
+
             // var environment = scene.createDefaultEnvironment({ enableGroundShadow: true });
             // environment.setMainColor(BABYLON.Color3.FromHexString("#74b9ff"))
             // environment.ground.parent.position.y = 0;
             // environment.ground.position.y = 0
-        
+
             // Enable XR
-            var xr = scene.createDefaultXRExperienceAsync()
+            // var xr = scene.createDefaultXRExperienceAsync()
+            const xr = scene.createDefaultXRExperienceAsync({
+                floorMeshes: [env.ground],
+            });
+            const featuresManager = xr.baseExperience.featuresManager;
+            featuresManager.enableFeature(BABYLON.WebXRFeatureName.TELEPORTATION, "stable" /* or latest */, {
+                xrInput: xr.input,
+                // add options here
+                //floorMeshes: [ground, secondFloor, thirdFloor],
+            });
             // xr.baseExperience.onStateChangedObservable.add((state) => {
             //     if (state === BABYLON.WebXRState.IN_XR) {
             //         // When entering webXR, position the user's feet at 0,0,-1
@@ -152,71 +166,71 @@
             // })
             return scene;
         };
-        
+
         var ScatterPlot = function (dataSet, params, scene) {
-        
+
             this._scene = scene;
             this._params = params;
-        
+
             this.data = dataSet;
             this.axis = [];
             this.labels = [];
             this.shapes = [];
-        
+
             this.convertToFlatShadedMesh = false;
             this.gridMaterial = false;
-        
+
             this.mesh = new BABYLON.Mesh("scatterPlot", this._scene);
-        
+
             this._depth = this._params.depth / 2,
                 this._width = this._params.width / 2,
                 this._height = this._params.height / 2,
                 this._a = this.data.labels.y.length,
                 this._b = this.data.labels.x.length,
                 this._c = this.data.labels.z.length;
-        
+
             this._color = new BABYLON.Color3(0.6, 0.6, 0.6);
-        
+
             this._addGrid = function (width, height, linesHeight, linesWidth, position, rotation) {
-        
+
                 var stepw = 2 * width / linesWidth,
                     steph = 2 * height / linesHeight;
                 var verts = [];
-        
+
                 //width
                 for (var i = -width; i <= width; i += stepw) {
                     verts.push([new BABYLON.Vector3(-height, i, 0), new BABYLON.Vector3(height, i, 0)]);
                 }
-        
+
                 //height
                 for (var i = -height; i <= height; i += steph) {
                     verts.push([new BABYLON.Vector3(i, -width, 0), new BABYLON.Vector3(i, width, 0)]);
                 }
-        
+
                 this._BBJSaddGrid(verts, position, rotation);
             };
-        
+
             this._BBJSaddGrid = function (verts, position, rotation) {
-        
+
                 var line = BABYLON.MeshBuilder.CreateLineSystem("linesystem", { lines: verts, updatable: false }, this._scene);
                 line.color = this._color;
-        
+
                 line.position = position;
                 line.rotation = rotation;
                 line.parent = this.mesh;
                 this.axis.push(line);
             };
-        
+
             this._addLabel = function (length, data, axis, position) {
-        
+
                 var diff = 2 * length / data.length,
                     p = new BABYLON.Vector3.Zero(),
                     parent = new BABYLON.Mesh("label_" + axis, this._scene);
-        
+
                 for (var i = 0; i < data.length; i++) {
                     var label = this._BBJSaddLabel(data[i]);
                     label.position = p.clone();
-        
+
                     switch (axis.toLowerCase()) {
                         case "x":
                             p.subtractInPlace(new BABYLON.Vector3(diff, 0, 0));
@@ -234,24 +248,24 @@
                 parent.parent = this.mesh;
                 this.labels.push(parent);
             };
-        
+
             this._BBJSaddLabel = function (text) {
                 var outputplane = BABYLON.Mesh.CreatePlane("outputplane", 10, this._scene, false);
                 outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
                 outputplane.material = new BABYLON.StandardMaterial("outputplane", this._scene);
-        
+
                 const outputplaneTexture = new BABYLON.DynamicTexture("dynamic texture", 512, this._scene, true, BABYLON.DynamicTexture.TRILINEAR_SAMPLINGMODE);
                 outputplaneTexture.drawText(text, null, null, "normal 250px Helvetica", "black", "transparent", true);
-        
+
                 outputplane.material.emissiveTexture = outputplaneTexture;
                 outputplane.material.opacityTexture = outputplaneTexture;
                 outputplane.material.backFaceCulling = true;
                 outputplane.material.disableLighting = true;
                 outputplane.material.freeze();
-        
+
                 return outputplane;
             };
-        
+
             this.setColor = function (color3) {
                 if (this.axis.length > 0) {
                     for (var i = 0; i < this.axis.length; i++) {
@@ -259,19 +273,19 @@
                     }
                 }
             };
-        
+
             this.setPosition = function (vector3) {
                 if (this.mesh) {
                     this.mesh.position = vector3;
                 }
             };
-        
+
             this.setScaling = function (vector3) {
                 if (this.mesh) {
                     this.mesh.scaling = vector3;
                 }
             };
-        
+
             this.draw = function (vector3_array, use_objects) {
                 var points = [];
                 if (vector3_array.length > 0) {
@@ -283,7 +297,7 @@
                         ));
                     }
                 }
-        
+
                 if (points.length > 0) {
                     if (use_objects) {
                         var objects;
@@ -296,7 +310,7 @@
                                 objects = sphere;
                             else
                                 objects = sphere.clone("sphere_" + i);
-        
+
                             if (this.convertToFlatShadedMesh) {
                                 objects.convertToFlatShadedMesh();
                             }
@@ -311,25 +325,25 @@
                         this.useRibbon = true;
                         var faceColors = [];
                         var points_chunk = this._chunk(points, this._c - 1);
-        
+
                         var ribbon = BABYLON.Mesh.CreateRibbon("ribbon", points_chunk, false, false, 0, this._scene, true, BABYLON.Mesh.DOUBLESIDE);
-        
+
                         var vertexData = new BABYLON.VertexData();
                         var pdata = ribbon.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-        
+
                         for (var i = 0; i < pdata.length; i += 3) {
                             var coef = (1 - pdata[i + 1] / this._a / 8);
                             faceColors.push(1, coef, 0.5, 1);
                         }
-        
+
                         vertexData.colors = faceColors;
                         vertexData.applyToMesh(ribbon, true);
                         ribbon.useVertexColors = true;
-        
+
                         if (this.convertToFlatShadedMesh) {
                             ribbon.convertToFlatShadedMesh();
                         }
-        
+
                         if (this.gridMaterial) {
                             var mat = new BABYLON.GridMaterial("grid", this._scene);
                             mat.gridRatio = 2;
@@ -342,7 +356,7 @@
                             var mat = new BABYLON.StandardMaterial("standard", this._scene);
                             mat.specularColor = new BABYLON.Color3();
                         }
-        
+
                         mat.backFaceCulling = false;
                         ribbon.material = mat;
                         ribbon.position.subtractInPlace(this.mesh.position);
@@ -351,46 +365,48 @@
                     }
                 }
             };
-        
+
             this._chunk = function (arr, chunkSize) {
                 var R = [];
                 for (var i = 0, len = arr.length; i < len; i += chunkSize)
                     R.push(arr.slice(i, i + chunkSize));
                 return R;
             };
-        
+
             //create items
             this._addGrid(this._height, this._width, this._b, this._a, new BABYLON.Vector3(0, 0, -this._depth), BABYLON.Vector3.Zero());
             this._addGrid(this._depth, this._width, this._b, this._c, new BABYLON.Vector3(0, -this._height, 0), new BABYLON.Vector3(Math.PI / 2, 0, 0));
             this._addGrid(this._height, this._depth, this._c, this._a, new BABYLON.Vector3(-this._width, 0, 0), new BABYLON.Vector3(0, Math.PI / 2, 0));
-        
+
             this._addLabel(this._width, this.data.labels.x, "x", new BABYLON.Vector3(this._width, -(this._height + 2), -this._depth));
             this._addLabel(this._height, this.data.labels.y, "y", new BABYLON.Vector3(this._width, -this._height, -(this._depth + 4)));
             this._addLabel(this._depth, this.data.labels.z, "z", new BABYLON.Vector3(this._width + 2, -(this._height + 2), this._depth));
-        
+
             return this;
         }
-        
+
         function roundToTwo(num) {
             return +(Math.round(num + "e+2") + "e-2");
         };
-                window.initFunction = async function() {
-                    
-                    
-                    var asyncEngineCreation = async function() {
-                        try {
-                        return createDefaultEngine();
-                        } catch(e) {
-                        console.log("the available createEngine function failed. Creating the default engine instead");
-                        return createDefaultEngine();
-                        }
-                    }
+        window.initFunction = async function () {
 
-                    window.engine = await asyncEngineCreation();
-        if (!engine) throw 'engine should not be null.';
-        startRenderLoop(engine, canvas);
-        window.scene = createScene();};
-        initFunction().then(() => {sceneToRender = scene                    
+
+            var asyncEngineCreation = async function () {
+                try {
+                    return createDefaultEngine();
+                } catch (e) {
+                    console.log("the available createEngine function failed. Creating the default engine instead");
+                    return createDefaultEngine();
+                }
+            }
+
+            window.engine = await asyncEngineCreation();
+            if (!engine) throw 'engine should not be null.';
+            startRenderLoop(engine, canvas);
+            window.scene = createScene();
+        };
+        initFunction().then(() => {
+            sceneToRender = scene
         });
 
         // Resize
@@ -399,4 +415,5 @@
         });
     </script>
 </body>
+
 </html>
